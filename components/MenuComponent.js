@@ -18,6 +18,7 @@ function Menu(props) {
             <ListItem
                 key={index}
                 chevron={false}
+                onPress={() => props.onPress(item.id)}
             >
                 <Image style={styles.tinyLogo} source={require('./images/uthappizza.png')}/>
                 <ListItem.Content>
