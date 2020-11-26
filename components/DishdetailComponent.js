@@ -10,6 +10,7 @@ function RenderDish(props){
     if (dish != null){
         return(
             <Card>
+                <Card.Title>{dish.name}</Card.Title>
                 <Image  style={{width: 300, height: 300}} source={require('./images/Imagen1.jpg')}/>
                 <Text style={{margin: 10}}>
                     {dish.description}
