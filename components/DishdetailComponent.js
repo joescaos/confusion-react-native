@@ -11,7 +11,7 @@ function RenderDish(props){
         return(
             <Card>
                 <Card.Title>{dish.name}</Card.Title>
-                <Image  style={{width: 300, height: 300}} source={require('./images/Imagen1.jpg')}/>
+                <Image  style={{width: 300, height: 300}} source={require('./images/buffet.png')}/>
                 <Text style={{margin: 10}}>
                     {dish.description}
                 </Text>
