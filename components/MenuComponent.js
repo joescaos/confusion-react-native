@@ -1,43 +1,54 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { View, FlatList, Image, StyleSheet } from 'react-native';
 import { ListItem} from 'react-native-elements';
+import { DISHES } from '../shared/dishes';
 
-function Menu(props) {
+class Menu extends Component {
 
-    const styles = StyleSheet.create({
-        tinyLogo: {
-          width: 50,
-          height: 50,
-          borderRadius: 40,
-        },
-      });
+    constructor(props){
+        super(props);
+        this.state = {
+            dishes: DISHES,
+        };
+    }
 
-    const renderMenuItem = ({item, index}) => {
+    render(){
+
+        const styles = StyleSheet.create({
+            tinyLogo: {
+              width: 50,
+              height: 50,
+              borderRadius: 40,
+            },
+          });
+
+        const renderMenuItem = ({item, index}) => {
+
+            return (
+                <ListItem
+                    key={index}
+                    chevron={false}
+                    onPress={() => navigate('Dishdetail', {dishId: item.id})}
+                >
+                    <Image style={styles.tinyLogo} source={require('./images/uthappizza.png')}/>
+                    <ListItem.Content>
+                    <ListItem.Title>{item.name}</ListItem.Title>
+                    <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>
+            );
+        };
+
+        const { navigate } = this.props.navigation;
 
         return (
-            <ListItem
-                key={index}
-                chevron={false}
-                onPress={() => props.onPress(item.id)}
-            >
-                <Image style={styles.tinyLogo} source={require('./images/uthappizza.png')}/>
-                <ListItem.Content>
-                <ListItem.Title>{item.name}</ListItem.Title>
-                <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
-        );
-    };
-
-    return (
             <FlatList 
-                data={props.dishes}
+                data={this.state.dishes}
                 renderItem={renderMenuItem}
                 keyExtractor={item => item.id.toString()}
             />
             
-    );
-}
-
-
+        );
+    }
+};
 export default Menu;

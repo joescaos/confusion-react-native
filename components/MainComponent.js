@@ -1,30 +1,80 @@
 import React, { Component } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer'
+
 import Menu from './MenuComponent';
-import { DISHES } from '../shared/dishes';
-import { View } from 'react-native';
 import Dishdetail from './DishdetailComponent';
+import Home from './HomeComponent';
+
+
+const MenuNavigator = createStackNavigator();
+
+function MenuNavigatorScreen() {
+  return(
+      <MenuNavigator.Navigator
+          initialRouteName='Menu'
+          screenOptions={{
+              headerStyle: {
+                  backgroundColor: "#512DA8"
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                  color: "#fff"            
+              }
+          }}
+      >
+          <MenuNavigator.Screen
+              name="Menu"
+              component={Menu}
+          />
+          <MenuNavigator.Screen
+              name="Dishdetail"
+              component={Dishdetail}
+              options={{ headerTitle: "Dish Detail"}}
+          />            
+      </MenuNavigator.Navigator>
+  );
+}
+
+const HomeNavigator = createStackNavigator();
+
+function HomeNavigatorScreen(){
+    return(
+        <HomeNavigator.Navigator
+            initialRouteName='Home'
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTintColor: "#fff",
+                headerTitleStyle: {
+                    color: "#fff"            
+                }
+            }}
+        >
+            <HomeNavigator.Screen
+                name="Home"
+                component={Home}
+            />          
+        </HomeNavigator.Navigator>
+    );
+};
+
+const MainNavigator = createDrawerNavigator();
+
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishes: DISHES,
-      selectedDish: null
-    };
-  }
-
-  onDishSelect(dishId){
-    this.setState({selectedDish: dishId})
-  }
 
   render() {
  
     return (
-        <View style={{paddingTop: 30, flex: 1 }}>
-          <Menu dishes={this.state.dishes} onPress={(dishId) => this.onDishSelect(dishId)}/>
-          <Dishdetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]}/>
-        </View>
-        
+        <NavigationContainer>
+          <MainNavigator.Navigator>
+              <MainNavigator.Screen name="Home" component={HomeNavigatorScreen}/>
+              <MainNavigator.Screen name="Menu" component={MenuNavigatorScreen} />
+          </MainNavigator.Navigator>
+        </NavigationContainer>
     );
   }
 }
