@@ -3,7 +3,7 @@ import { View, Platform, Text, ScrollView, Image, StyleSheet, SafeAreaView } fro
 import { Icon } from 'react-native-elements';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
@@ -11,6 +11,25 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
+
+import { fetchDishes, fetchPromos, fetchLeaders, fetchComments } from '../redux/ActionCreators';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    return{
+        dishes: state.dishes,
+        comments: state.comments,
+        promotions: state.promotions,
+        leaders: state.leaders
+    }
+}
+
+const mapDispatchToProps = dispatch =>({
+    fetchDishes: () => dispatch(fetchDishes()),
+    fetchPromos: () => dispatch(fetchPromos()),
+    fetchComments: () => dispatch(fetchComments()),
+    fetchLeaders: () => dispatch(fetchLeaders()),
+})
 
 
 const Stack = createStackNavigator();
@@ -209,6 +228,13 @@ function MainDrawerScreen(){
 
 class Main extends Component {
 
+    componentDidMount(){
+        this.props.fetchDishes();
+        this.props.fetchLeaders();
+        this.props.fetchPromos();
+        this.props.fetchComments()
+    }
+
   render() {
  
     return (
@@ -246,5 +272,5 @@ const styles = StyleSheet.create({
     }
   });
   
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
 

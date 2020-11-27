@@ -1,7 +1,14 @@
 import React, { Component }  from 'react';
 import { Text, View, Image, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
-import { LEADERS } from '../shared/leaders';
+import { baseUrl } from '../shared/baseUrl';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    return{
+        leaders: state.leaders
+    }
+}
 
 function History(){
     return(
@@ -27,14 +34,6 @@ function History(){
 
 class About extends Component{
 
-    constructor(props){
-        super(props);
-        this.state = {
-            leaders: LEADERS,
-        }
-
-    }
-
     static navigationOptions = {
         title: 'About us'
     }
@@ -53,10 +52,10 @@ class About extends Component{
             
             return(
                 <ListItem
-                    key={item.id}
+                    key={index}
                     chevron={false}
                 >
-                    <Image style={styles.tinyLogo} source={require('./images/Imagen1.jpg')}/>
+                    <Image style={styles.tinyLogo} source={{ uri: baseUrl + item.image }}/>
                     <ListItem.Content>
                         <ListItem.Title>{item.name}</ListItem.Title>
                         <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
@@ -69,9 +68,9 @@ class About extends Component{
                 <History />
                 <Card title='Corporate Leadership'>
                     <FlatList
-                        data={this.state.leaders}
+                        data={this.props.leaders.leaders}
                         renderItem={RenderLeader}
-                        keyExtractor={leader => leader.id.toString()}
+                        keyExtractor={item => item.id.toString()}
                     />
                 </Card>
             </ScrollView>
@@ -80,4 +79,4 @@ class About extends Component{
     };
 }
 
-export default About;
+export default connect(mapStateToProps)(About);

@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import { View, FlatList, Image, StyleSheet } from 'react-native';
-import { ListItem} from 'react-native-elements';
-import { DISHES } from '../shared/dishes';
+import { Tile} from 'react-native-elements';
+
+import { baseUrl } from '../shared/baseUrl';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    return{
+        dishes: state.dishes,
+        
+    }
+}
 
 class Menu extends Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            dishes: DISHES,
-        };
-    }
 
     render(){
 
@@ -25,17 +27,13 @@ class Menu extends Component {
         const renderMenuItem = ({item, index}) => {
 
             return (
-                <ListItem
+                <Tile
                     key={index}
-                    chevron={false}
+                    caption={item.description}
+                    featured
                     onPress={() => navigate('Dishdetail', {dishId: item.id})}
-                >
-                    <Image style={styles.tinyLogo} source={require('./images/uthappizza.png')}/>
-                    <ListItem.Content>
-                    <ListItem.Title>{item.name}</ListItem.Title>
-                    <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem>
+                    imageSrc={{uri: baseUrl + item.image }}
+                />
             );
         };
 
@@ -43,7 +41,7 @@ class Menu extends Component {
 
         return (
             <FlatList 
-                data={this.state.dishes}
+                data={this.props.dishes.dishes}
                 renderItem={renderMenuItem}
                 keyExtractor={item => item.id.toString()}
             />
@@ -51,4 +49,4 @@ class Menu extends Component {
         );
     }
 };
-export default Menu;
+export default connect(mapStateToProps)(Menu);
