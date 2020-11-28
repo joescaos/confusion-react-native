@@ -4,6 +4,8 @@ import { Card, ListItem } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux';
 
+import { Loading } from './LoadingComponent';
+
 const mapStateToProps = state => {
     return{
         leaders: state.leaders
@@ -62,20 +64,45 @@ class About extends Component{
                     </ListItem.Content>
             </ListItem>
             )
+        };
+
+        if (this.props.leaders.isLoading){
+            return(
+                <ScrollView>
+                    <History />
+                    <Card title='Corporate Leadership'>
+                        <Loading />
+                    </Card>
+                </ScrollView>
+            );
         }
-        return(
-            <ScrollView>
-                <History />
-                <Card title='Corporate Leadership'>
-                    <FlatList
-                        data={this.props.leaders.leaders}
-                        renderItem={RenderLeader}
-                        keyExtractor={item => item.id.toString()}
-                    />
-                </Card>
-            </ScrollView>
-            
-        );
+        else if (this.props.leaders.errMess){
+            return(
+                <ScrollView>
+                    <History />
+                    <Card title='Corporate Leadership'>
+                        <Text>{this.props.leaders.errMess}</Text>
+                    </Card>
+                </ScrollView>
+            );
+        }
+
+        else {
+            return(
+                <ScrollView>
+                    <History />
+                    <Card title='Corporate Leadership'>
+                        <FlatList
+                            data={this.props.leaders.leaders}
+                            renderItem={RenderLeader}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </Card>
+                </ScrollView>
+                
+            );
+        }
+        
     };
 }
 

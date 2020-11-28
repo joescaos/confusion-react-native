@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { View, FlatList, Image, StyleSheet } from 'react-native';
 import { Tile} from 'react-native-elements';
+import { Loading } from './LoadingComponent';
 
 import { baseUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux';
@@ -29,24 +30,38 @@ class Menu extends Component {
             return (
                 <Tile
                     key={index}
+                    title={item.name}
                     caption={item.description}
                     featured
                     onPress={() => navigate('Dishdetail', {dishId: item.id})}
-                    imageSrc={{uri: baseUrl + item.image }}
+                    imageSrc={{uri: baseUrl + item.image, height: 100, width: 100 }}
                 />
             );
         };
 
         const { navigate } = this.props.navigation;
-
-        return (
-            <FlatList 
-                data={this.props.dishes.dishes}
-                renderItem={renderMenuItem}
-                keyExtractor={item => item.id.toString()}
-            />
-            
-        );
+        if (this.props.dishes.isLoading){
+            return(
+                <Loading />
+            );
+        }
+        else if (this.props.dishes.errMess){
+            return(
+                <View>            
+                    <Text>{props.dishes.errMess}</Text>
+                </View> 
+            );
+        }
+        else {
+            return (
+                <FlatList 
+                    data={this.props.dishes.dishes}
+                    renderItem={renderMenuItem}
+                    keyExtractor={item => item.id.toString()}
+                />
+                
+            );
+        }
     }
 };
 export default connect(mapStateToProps)(Menu);
