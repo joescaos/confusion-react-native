@@ -10,6 +10,7 @@ import Dishdetail from './DishdetailComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
+import Reservation from './ReservationComponent';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 import { fetchDishes, fetchPromos, fetchLeaders, fetchComments } from '../redux/ActionCreators';
@@ -180,6 +181,31 @@ function AboutNavigatorScreen({navigation}){
     );
 };
 
+function ReservationNavigatorScreen({navigation}){
+    return(
+        <Stack.Navigator
+            initialRouteName='Reservation'
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTintColor: "#fff",
+                headerTitleStyle: {
+                    color: "#fff"            
+                }
+            }}
+        >
+            <Stack.Screen
+                name="Reservation"
+                component={Reservation}
+                options={{
+                    headerLeft: () => <StackNavigatorIcon navigation={navigation} />
+                }}
+            />          
+        </Stack.Navigator>
+    );
+};
+
 const MainDrawerNavigator = createDrawerNavigator();
 
 function MainDrawerScreen(){
@@ -220,7 +246,14 @@ function MainDrawerScreen(){
                         size={22}/>
                 }}
             />
-
+            <MainDrawerNavigator.Screen
+                name="Reservation"
+                component={ReservationNavigatorScreen}
+                options={{
+                    drawerIcon: () => <DrawerNavigatorIcon name='cutlery' 
+                        size={22}/>
+                }}
+            />
         </MainDrawerNavigator.Navigator>
     )
 }
